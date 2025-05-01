@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>हमशक्ल खोजें</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1600&q=80') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    h1, p {
+      text-align: center;
+      color: #333;
+    }
+
+    h1 {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .card {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    }
+
+    input[type="file"] {
+      display: block;
+      margin: 10px auto;
+    }
+
+    .preview-img {
+      display: none;
+      max-height: 250px;
+      margin: 20px auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background-color: #0056b3;
+    }
+
+    .whatsapp-button {
+      background-color: #25d366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-weight: bold;
+    }
+
+    .whatsapp-button:hover {
+      background-color: #1ebe5b;
+    }
+
+    .note, .instructions {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    .ads {
+      background-color: rgba(255, 255, 255, 0.8);
+      text-align: center;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      color: #444;
+    }
+
+    .spinner {
+      margin: 20px auto;
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #007bff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .sample-images {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .sample-images img {
+      height: 100px;
+      width: 100px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="ads">[ विज्ञापन स्थान - यहाँ आपका ऐड दिखेगा ]</div>
+
+    <h1>अपने हमशक्ल को खोजें</h1>
+
+    <!-- Detailed paragraph about Doppelgänger -->
+    <p style="text-align:center; color:#444; font-size:16px; margin-bottom: 20px;">
+      "हमशक्ल" (Doppelgänger) एक ऐसा व्यक्ति होता है जो आपकी शक्ल-सूरत से बेहद मेल खाता है, लेकिन आपका कोई खून का रिश्ता नहीं होता। 
+      वैज्ञानिकों का मानना है कि दुनिया में एक जैसे चेहरे वाले लोग ज़रूर होते हैं, बस उन्हें ढूंढ़ना बाकी होता है। 
+      इस वेबसाइट के ज़रिए आप अपने डिजिटल हमशक्ल को खोज सकते हैं और दोस्तों के साथ मज़ेदार तुलना कर सकते हैं।
+    </p>
+
+    <p>अपनी फ़ोटो अपलोड करें और अपने हमशक्ल को खोजें। फिर इसे 5 दोस्तों के साथ शेयर करें!</p>
+
+    <div class="card">
+      <label style="text-align: center; display: block;">
+        <strong>अपनी फ़ोटो अपलोड करें:</strong>
+        <input type="file" accept="image/*" id="photoInput" />
+      </label>
+
+      <img id="preview" class="preview-img" alt="पूर्वावलोकन" />
+
+      <button class="button" onclick="findDoppelganger()">हमशक्ल खोजें</button>
+
+      <div id="spinner" class="spinner" style="display: none;"></div>
+
+      <!-- Single-click button -->
+      <button id="shareButton" class="button" onclick="showShareArea()" style="display: none; background-color: orange;">
+        शेयर करने के लिए क्लिक करें
+      </button>
+
+      <!-- Middle Ad -->
+      <div id="midAd" class="ads" style="display: none;">[ यहाँ बीच का विज्ञापन दिखाई देगा ]</div>
+
+      <!-- WhatsApp Share Section -->
+      <div id="shareSection" style="display: none;">
+        <p class="instructions">नीचे दिए गए बटन से इस लिंक को 5 दोस्तों के साथ WhatsApp पर शेयर करें:</p>
+        <a id="whatsappLink" href="#" target="_blank" class="button whatsapp-button">
+          <img src="https://img.icons8.com/color/24/000000/whatsapp--v1.png" alt="WhatsApp" />
+          अपने हमशक्ल को देखने के लिए 5 दोस्तों को शेयर करें
+        </a>
+        <p class="note">लिंक शेयर करें और अपना असली हमशक्ल देखें!</p>
+      </div>
+    </div>
+
+    <!-- Sample Images -->
+    <div class="sample-images">
+      <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=200&h=200&q=60" alt="Face 1">
+      <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&h=200&q=60" alt="Face 2">
+      <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=200&h=200&q=60" alt="Face 3">
+      <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=60" alt="Face 4">
+    </div>
+
+    <div class="ads">[ विज्ञापन स्थान - नीचे का ऐड ]</div>
+  </div>
+
+  <script>
+    const photoInput = document.getElementById("photoInput");
+    const preview = document.getElementById("preview");
+    const whatsappLink = document.getElementById("whatsappLink");
+    const shareSection = document.getElementById("shareSection");
+    const spinner = document.getElementById("spinner");
+    const shareButton = document.getElementById("shareButton");
+    const midAd = document.getElementById("midAd");
+
+    let imageSelected = false;
+
+    photoInput.addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = "block";
+        imageSelected = true;
+        shareSection.style.display = "none";
+        shareButton.style.display = "none";
+        midAd.style.display = "none";
+      }
+    });
+
+    function findDoppelganger() {
+      if (!imageSelected) {
+        alert("कृपया पहले एक फ़ोटो अपलोड करें।");
+        return;
+      }
+
+      spinner.style.display = "block";
+
+      setTimeout(() => {
+        spinner.style.display = "none";
+        alert("हमशक्ल मिल गया!");
+        shareButton.style.display = "block";
+      }, 2000);
+    }
+
+    function showShareArea() {
+      const siteUrl = "https://yourdomain.com"; // Replace with your actual domain
+      const message = `मैंने अपना हमशक्ल ढूंढ लिया है! आप भी देखें: ${siteUrl}`;
+      const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
+
+      whatsappLink.href = whatsappUrl;
+
+      midAd.style.display = "block";
+      shareSection.style.display = "block";
+
+      midAd.scrollIntoView({ behavior: "smooth" });
+
+      // Prevent multiple clicks by disabling the button
+      shareButton.disabled = true;
+      shareButton.textContent = "शेयर विकल्प दिखाया जा चुका है";
+    }
+  </script>
+</body>
+</html>
